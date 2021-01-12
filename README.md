@@ -1,1 +1,1 @@
-# myapp
+# phonebook-server
