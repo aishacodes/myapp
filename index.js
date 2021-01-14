@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 
 const PORT = 3001;
-const notes = [
+let persons = [
   {
     name: "Arto Hellas",
     number: "040-123456",
@@ -29,13 +29,24 @@ app.get("/", (req, res) => {
   res.send("Hello world");
 });
 app.get("/api/persons", (req, res) => {
-  res.json(notes);
+  res.json(persons);
 });
 app.get("/info", (req, res) => {
   const created = new Date(Date.now());
   res.send(
-    `<div>Phonebook has info for ${notes.length} people <br/><br/>  ${created} </div>`
+    `<div>Phonebook has info for ${persons.length} people <br/><br/>  ${created} </div>`
   );
+});
+app.get("/api/persons/:id", (req, res) => {
+  const id = req.params.id;
+  const person = persons.find((person) => person.id == id);
+  if (person) res.json(person);
+  else res.status(404).end();
+});
+app.delete("/api/persons/:id", (req, res) => {
+  const { id } = req.params;
+  persons = persons.filter((person) => person.id != id);
+  res.status(204).end();
 });
 
 app.listen(PORT, () => {
