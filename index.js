@@ -1,9 +1,16 @@
 const express = require("express");
-const app = express();
 const morgan = require("morgan");
+const app = express();
 
 app.use(express.json());
-app.use(morgan("tiny"));
+
+morgan.token("body", (req, res) => JSON.stringify(req.body));
+
+//app.use(morgan("tiny")); //GET /api/persons 200 223 - 3.698 ms
+
+app.use(
+  morgan(":method :url :status :res[content-length] - :response-time ms :body")
+);
 
 const PORT = 3001;
 let persons = [
