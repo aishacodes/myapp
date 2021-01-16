@@ -4,13 +4,13 @@
 GET {{url}}
 
 ###
-DELETE http://localhost:3001/api/persons/2
+DELETE http://localhost:3001/api/persons/1gufg
 
 ###
 POST http://localhost:3001/api/persons/
 content-type: application/json
 
   {
-    "name": "Ada",
-    "number": "39-44-5323523"
+    "name": "rr ",
+    "number": " 44"
   }

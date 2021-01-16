@@ -55,8 +55,16 @@ const generateId = () => Math.random().toString(36).substring(2, 7);
 app.post("/api/persons", (req, res) => {
   const person = req.body;
 
-  person.id = generateId();
+  if (!person.name.trim()) return res.status(400).send('"name" is missing!');
+  if (!person.number.trim())
+    return res.status(400).send('"number" is missing!');
 
+  const userExist = persons.find((pers) => pers.name == person.name.trim());
+
+  if (userExist) return res.status(409).send("name must be unique");
+
+  person.id = generateId();
+  person.name = person.name.trim();
   persons = persons.concat(person);
 
   res.status(201).json(persons);
