@@ -1,8 +1,9 @@
 const express = require("express");
 const morgan = require("morgan");
 const app = express();
-
+const cors = require("cors");
 app.use(express.json());
+app.use(cors());
 
 morgan.token("body", (req, res) => JSON.stringify(req.body));
 
@@ -11,7 +12,6 @@ morgan.token("body", (req, res) => JSON.stringify(req.body));
 app.use(
   morgan(":method :url :status :res[content-length] - :response-time ms :body")
 );
-
 const PORT = 3001;
 let persons = [
   {
@@ -33,6 +33,11 @@ let persons = [
     name: "Mary Poppendieck",
     number: "39-23-6423122",
     id: 4,
+  },
+  {
+    name: "Aishatu",
+    number: "90955-55-44",
+    id: 5,
   },
 ];
 app.get("/", (req, res) => {
