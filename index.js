@@ -36,11 +36,6 @@ let persons = [
     number: "39-23-6423122",
     id: 4,
   },
-  {
-    name: "Aishatu",
-    number: "90955-55-44",
-    id: 5,
-  },
 ];
 app.get("/", (req, res) => {
   res.send("Hello world");
