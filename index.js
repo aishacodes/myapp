@@ -81,7 +81,7 @@ app.post("/api/persons", (req, res) => {
   person.name = person.name.trim();
   persons = persons.concat(person);
 
-  res.status(201).json(persons);
+  res.status(201).json(person);
 });
 app.listen(PORT, () => {
   console.log(`app is running on ${PORT}`);
