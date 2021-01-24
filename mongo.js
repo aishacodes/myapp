@@ -23,14 +23,6 @@ const phonebookSchema = new mongoose.Schema({
 });
 
 const Person = mongoose.model("Person", phonebookSchema);
-// if (process.argv.length < 4) {
-//   console.log("Please provide the name as an argument: node mongo.js <name>");
-//   process.exit(1);
-// }
-// if (process.argv.length < 5) {
-//   console.log("Please provide the number as an argument: node mongo.js <name>");
-//   process.exit(1);
-// }
 if (process.argv.length < 4) {
   Person.find()
     .then((persons) => {
@@ -39,7 +31,7 @@ if (process.argv.length < 4) {
         console.log(`${person.name} ${person.number}`)
       );
     })
-    .catch((err) => console.error(JSON.stringify(err, null, 2)))
+    .catch((err) => console.log(err))
     .finally(() => {
       mongoose.connection.close();
       process.exit(1);
