@@ -1,6 +1,6 @@
 const { model, Schema } = require("mongoose");
 
-const phonebookSchema = new mongoose.Schema({
+const phonebookSchema = new Schema({
   name: String,
   number: String,
 });

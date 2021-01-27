@@ -3,7 +3,7 @@ const morgan = require("morgan");
 const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
-
+const Person = require("./models");
 require("dotenv").config();
 
 const dburl = process.env.db_URL;
@@ -11,8 +11,13 @@ const dburl = process.env.db_URL;
 mongoose.connect(dburl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useFindAndModify: false,
   useCreateIndex: true,
+});
+
+const db = mongoose.connection;
+db.on("error", console.log);
+db.once("open", () => {
+  console.log("DB connection successful");
 });
 
 app.use(express.json());
@@ -31,12 +36,13 @@ app.get("/", (req, res) => {
   res.send("Hello world");
 });
 app.get("/api/persons", (req, res) => {
-  Person.find()
+  Person.find({})
     .then((persons) => {
       res.json(persons);
     })
     .catch((err) => console.log(err));
 });
+
 app.get("/info", (req, res) => {
   const created = new Date(Date.now());
   res.send(
