@@ -63,22 +63,29 @@ app.delete("/api/persons/:id", (req, res) => {
 
 const generateId = () => Math.random().toString(36).substring(2, 7);
 
-app.post("/api/persons", (req, res) => {
+app.post("/api/persons", async (req, res) => {
   const person = req.body;
 
   if (!person.name.trim()) return res.status(400).send('"name" is missing!');
   if (!person.number.trim())
     return res.status(400).send('"number" is missing!');
+  try {
+    const userExist = await Person.findOne({ name: person.name });
 
-  const userExist = persons.find((pers) => pers.name == person.name.trim());
+    if (userExist)
+      return res.status(409).json({
+        error: '"name" must be unique',
+      });
 
-  if (userExist) return res.status(409).send("name must be unique");
-
-  person.id = generateId();
-  person.name = person.name.trim();
-  persons = persons.concat(person);
-
-  res.status(201).json(person);
+    const newPerson = await new Person({
+      name: person.name,
+      number: person.number,
+    });
+    newPerson.save();
+    res.status(201).json(person);
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 const PORT = process.env.PORT;

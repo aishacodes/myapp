@@ -1,4 +1,4 @@
-@url = http://localhost:3001/api/persons
+@url = http://localhost:3030/api/persons
 ###
 
 GET {{url}}
@@ -7,7 +7,7 @@ GET {{url}}
 DELETE http://localhost:3001/api/persons/1
 
 ###
-POST http://localhost:3001/api/persons/
+POST http://localhost:3030/api/persons/
 content-type: application/json
 
   {
