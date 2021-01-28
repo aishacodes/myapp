@@ -43,17 +43,26 @@ app.get("/api/persons", (req, res) => {
     .catch((err) => console.log(err));
 });
 
-app.get("/info", (req, res) => {
+app.get("/info", async (req, res) => {
   const created = new Date(Date.now());
-  res.send(
-    `<div>Phonebook has info for ${persons.length} people <br/><br/>  ${created} </div>`
-  );
+  try {
+    const personNo = await Person.countDocuments();
+    res.send(
+      `<div>Phonebook has info for ${personNo} people <br/><br/>  ${created} </div>`
+    );
+  } catch (error) {
+    console.log(error);
+  }
 });
-app.get("/api/persons/:id", (req, res) => {
+app.get("/api/persons/:id", async (req, res) => {
   const id = req.params.id;
-  const person = persons.find((person) => person.id == id);
-  if (person) res.json(person);
-  else res.status(404).end();
+  try {
+    const person = await Person.findById(id);
+    if (person) res.json(person);
+    else res.status(404).end();
+  } catch (error) {
+    console.log(error);
+  }
 });
 app.delete("/api/persons/:id", (req, res) => {
   const { id } = req.params;
