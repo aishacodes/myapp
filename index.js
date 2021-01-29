@@ -54,6 +54,7 @@ app.get("/info", async (req, res) => {
     console.log(error);
   }
 });
+
 app.get("/api/persons/:id", async (req, res) => {
   const id = req.params.id;
   try {
@@ -64,14 +65,15 @@ app.get("/api/persons/:id", async (req, res) => {
     console.log(error);
   }
 });
-app.delete("/api/persons/:id", (req, res) => {
+app.delete("/api/persons/:id", async (req, res) => {
   const { id } = req.params;
-  persons = persons.filter((person) => person.id != id);
-  res.status(204).end();
+  try {
+    await Person.findOneAndRemove(id);
+    res.status(204).end();
+  } catch (error) {
+    console.log(error);
+  }
 });
-
-const generateId = () => Math.random().toString(36).substring(2, 7);
-
 app.post("/api/persons", async (req, res) => {
   const person = req.body;
 

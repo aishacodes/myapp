@@ -1,13 +1,13 @@
 @url = http://localhost:3030/api/persons
 ###
 
-GET {{url}}/60132ce318d9cf58fb4717f1
+GET {{url}}
 
 ###
 GET http://localhost:3030/info
 
 ###
-DELETE http://localhost:3001/api/persons/1
+DELETE http://localhost:3030/api/persons/6009b432115d7f12915ff532
 
 ###
 POST http://localhost:3030/api/persons/
