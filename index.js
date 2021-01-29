@@ -81,11 +81,12 @@ app.post("/api/persons", async (req, res) => {
   if (!person.number.trim())
     return res.status(400).send('"number" is missing!');
   try {
-    const userExist = await Person.findOne({ name: person.name });
+    const nameExist = await Person.findOne({ name: person.name });
 
-    if (userExist)
+    const numberExist = await Person.findOne({ number: person.number });
+    if (numberExist && nameExist)
       return res.status(409).json({
-        error: '"name" must be unique',
+        error: "duplicate entry",
       });
 
     const newPerson = await new Person({
