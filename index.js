@@ -12,6 +12,7 @@ mongoose.connect(dburl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
+  useFindAndModify: true,
 });
 
 const db = mongoose.connection;
@@ -65,15 +66,18 @@ app.get("/api/persons/:id", async (req, res) => {
     console.log(error);
   }
 });
-app.delete("/api/persons/:id", async (req, res) => {
-  const { id } = req.params;
+app.delete("/api/persons/:id", async (req, res, next) => {
+  const person = req.body;
+  const id = req.params.id || person.id;
+
   try {
-    await Person.findOneAndRemove(id);
+    await Person.findByIdAndDelete({ _id: id });
     res.status(204).end();
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 });
+
 app.post("/api/persons", async (req, res) => {
   const person = req.body;
 
@@ -92,13 +96,29 @@ app.post("/api/persons", async (req, res) => {
     const newPerson = await new Person({
       name: person.name,
       number: person.number,
-    });
-    newPerson.save();
-    res.status(201).json(person);
+    }).save();
+    res.status(201).json(newPerson);
   } catch (error) {
     console.log(error);
   }
 });
+
+const unknownEndPoint = (request, response) => {
+  response.status(404).send({ error: "unknown endpoint" });
+};
+app.use(unknownEndPoint);
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message);
+
+  if (error.name === "CastError") {
+    return response.status(400).send({ error: "malformatted id" });
+  }
+
+  next(error);
+};
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT;
 

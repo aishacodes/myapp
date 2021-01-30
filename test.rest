@@ -7,13 +7,13 @@ GET {{url}}
 GET http://localhost:3030/info
 
 ###
-DELETE http://localhost:3030/api/persons/6009b432115d7f12915ff532
+DELETE http://localhost:3030/api/persons/6015945bf3a2c53ce081a02c
 
 ###
 POST http://localhost:3030/api/persons/
 content-type: application/json
 
   {
-    "name": "rr ",
-    "number": " 4466"
+    "name": "ELla Hellas",
+    "number": "08077226154"
   }
