@@ -67,8 +67,7 @@ app.get("/api/persons/:id", async (req, res) => {
   }
 });
 app.delete("/api/persons/:id", async (req, res, next) => {
-  const person = req.body;
-  const id = req.params.id || person.id;
+  const id = req.params.id;
 
   try {
     await Person.findByIdAndDelete({ _id: id });
@@ -100,6 +99,23 @@ app.post("/api/persons", async (req, res) => {
     res.status(201).json(newPerson);
   } catch (error) {
     console.log(error);
+  }
+});
+app.put("/api/persons/:id", async (req, res, next) => {
+  const body = req.body;
+  const person = {
+    name: body.name,
+    number: body.number,
+  };
+  if (!body.name && !body.number)
+    return res.status(400).json({ error: '"name" or "number" is required' });
+
+  try {
+    Person.findByIdAndUpdate(req.params.id, person, { new: true });
+
+    res.json(person);
+  } catch (err) {
+    next(err);
   }
 });
 

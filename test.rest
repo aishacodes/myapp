@@ -17,3 +17,13 @@ content-type: application/json
     "name": "ELla Hellas",
     "number": "08077226154"
   }
+
+###
+
+PUT http://localhost:3030/api/persons/6017326e4484fa50ff015ffc
+content-type: application/json
+
+  {
+    "name": "ELla",
+    "number": "08077226154"
+  }
