@@ -87,11 +87,16 @@ app.post("/api/persons", async (req, res) => {
     const nameExist = await Person.findOne({ name: person.name });
 
     const numberExist = await Person.findOne({ number: person.number });
-    if (numberExist && nameExist)
-      return res.status(409).json({
-        error: "duplicate entry",
-      });
-
+    if (nameExist) {
+      Person.findByIdAndUpdate(nameExist.id, person, { new: true })
+        .then((updatedNote) => {
+          res.json(updatedNote);
+        })
+        .catch((err) => {
+          next(err);
+        });
+      return;
+    }
     const newPerson = await new Person({
       name: person.name,
       number: person.number,
@@ -110,13 +115,13 @@ app.put("/api/persons/:id", async (req, res, next) => {
   if (!body.name && !body.number)
     return res.status(400).json({ error: '"name" or "number" is required' });
 
-  try {
-    Person.findByIdAndUpdate(req.params.id, person, { new: true });
-
-    res.json(person);
-  } catch (err) {
-    next(err);
-  }
+  Person.findByIdAndUpdate(req.params.id, person, { new: true })
+    .then((updatedNote) => {
+      res.json(updatedNote);
+    })
+    .catch((err) => {
+      next(err);
+    });
 });
 
 const unknownEndPoint = (request, response) => {
