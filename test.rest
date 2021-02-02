@@ -7,7 +7,7 @@ GET {{url}}
 GET http://localhost:3030/info
 
 ###
-DELETE http://localhost:3030/api/persons/6017e77a4569ae5189814c43
+DELETE http://localhost:3030/api/persons/6018806a3a2956681615db73
 
 ###
 POST http://localhost:3030/api/persons/
@@ -15,7 +15,7 @@ content-type: application/json
 
   {
     "name": "Aishat",
-    "number": "09077226154"
+    "number": "767885322"
   }
 
 ###
@@ -24,6 +24,6 @@ PUT http://localhost:3030/api/persons/6017326e4484fa50ff015ffc
 content-type: application/json
 
   {
-    "name": "ELla Rito",
-    "number": "08077226100"
+    "name": "",
+    "number": ""
   }

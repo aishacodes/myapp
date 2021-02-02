@@ -70,40 +70,40 @@ app.delete("/api/persons/:id", async (req, res, next) => {
   const id = req.params.id;
 
   try {
-    await Person.findByIdAndDelete({ _id: id });
+    await Person.findOneAndRemove({ _id: id });
     res.status(204).end();
   } catch (error) {
     next(error);
   }
 });
 
-app.post("/api/persons", async (req, res) => {
+app.post("/api/persons", async (req, res, next) => {
   const person = req.body;
 
-  if (!person.name.trim()) return res.status(400).send('"name" is missing!');
-  if (!person.number.trim())
-    return res.status(400).send('"number" is missing!');
+  // if (!person.name.trim()) return res.status(400).send('"name" is missing!');
+  // if (!person.number.trim())
+  //   return res.status(400).send('"number" is missing!');
   try {
     const nameExist = await Person.findOne({ name: person.name });
 
     const numberExist = await Person.findOne({ number: person.number });
-    if (nameExist) {
-      Person.findByIdAndUpdate(nameExist.id, person, { new: true })
-        .then((updatedNote) => {
-          res.json(updatedNote);
-        })
-        .catch((err) => {
-          next(err);
-        });
-      return;
-    }
+    // if (nameExist) {
+    //   Person.findByIdAndUpdate(nameExist.id, person, { new: true })
+    //     .then((updatedNote) => {
+    //       res.json(updatedNote);
+    //     })
+    //     .catch((err) => {
+    //       next(err);
+    //     });
+    //   return;
+    // }
     const newPerson = await new Person({
       name: person.name,
       number: person.number,
     }).save();
     res.status(201).json(newPerson);
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 });
 app.put("/api/persons/:id", async (req, res, next) => {
@@ -134,6 +134,10 @@ const errorHandler = (error, request, response, next) => {
 
   if (error.name === "CastError") {
     return response.status(400).send({ error: "malformatted id" });
+  } else if (error.name === "ValidationError") {
+    return response.status(400).json({ error: error.message });
+  } else if (error.name === "ValidatorError") {
+    return response.status(400).json({ error: error.message });
   }
 
   next(error);
