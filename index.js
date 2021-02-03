@@ -36,6 +36,7 @@ app.use(
 app.get("/", (req, res) => {
   res.send("Hello world");
 });
+
 app.get("/api/persons", (req, res) => {
   Person.find({})
     .then((persons) => {
@@ -66,11 +67,12 @@ app.get("/api/persons/:id", async (req, res) => {
     console.log(error);
   }
 });
+
 app.delete("/api/persons/:id", async (req, res, next) => {
   const id = req.params.id;
 
   try {
-    await Person.findOneAndRemove({ _id: id });
+    await Person.findByIdAndRemove(id);
     res.status(204).end();
   } catch (error) {
     next(error);
@@ -106,6 +108,7 @@ app.post("/api/persons", async (req, res, next) => {
     next(error);
   }
 });
+
 app.put("/api/persons/:id", async (req, res, next) => {
   const body = req.body;
   const person = {
@@ -127,16 +130,17 @@ app.put("/api/persons/:id", async (req, res, next) => {
 const unknownEndPoint = (request, response) => {
   response.status(404).send({ error: "unknown endpoint" });
 };
+
 app.use(unknownEndPoint);
 
 const errorHandler = (error, request, response, next) => {
   console.error(error.message);
-
+  console.error(":::", error.name);
   if (error.name === "CastError") {
     return response.status(400).send({ error: "malformatted id" });
   } else if (error.name === "ValidationError") {
     return response.status(400).json({ error: error.message });
-  } else if (error.name === "ValidatorError") {
+  } else if (error.name === "MongoError") {
     return response.status(400).json({ error: error.message });
   }
 
