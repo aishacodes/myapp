@@ -7,23 +7,23 @@ GET {{url}}
 GET http://localhost:3040/info
 
 ###
-DELETE http://localhost:3040/api/persons/6018806a3a2956681615db73
+DELETE http://localhost:3040/api/persons/601be5d425687abcb9a72f01
 
 ###
 POST http://localhost:3040/api/persons/
 content-type: application/json
 
   {
-    "name": "Aishat Tolulope",
-    "number": "09087654322"
+    "name": "Aishat Adeshewa",
+    "number": "09009009902"
   }
 
 ###
 
-PUT http://localhost:3040/api/persons/6017326e4484fa50ff015ffc
+PUT http://localhost:3040/api/persons/601abfb7e1eba2a22a806a2b
 content-type: application/json
 
   {
-    "name": "",
-    "number": ""
+    "name": "Aishat Tolulope",
+    "number": "07012941518"
   }
